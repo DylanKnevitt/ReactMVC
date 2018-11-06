@@ -6,3 +6,4 @@ C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\bin\
 C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\bin\Debug\netcoreapp2.0\Repositories.pdb
 C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.dll
 C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.pdb
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.csprojAssemblyReference.cache

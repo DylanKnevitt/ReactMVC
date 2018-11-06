@@ -34,9 +34,23 @@ namespace Repositories
 
         public int Add(EmployeeDataModel dataModel)
         {
-            var query = @"";
+            var query = @"spAddEmployees
+            @FirstName,
+            @LastName,
+            @ComplexDetails,
+            @StreetName,
+            @Suburb,
+            @Province,
+            @Country,
+            @PostalCode,
+            @ContactCountryCode,
+            @ContactNumber,
+            @ContactExtension,
+            @EmailAddress,
+            @TwitterHandle,
+            @GithubPage";
 
-            var result = _dbConnection.Query<int>(query);
+            var result = _dbConnection.Query<int>(query,dataModel);
             return result.FirstOrDefault();
         }
 

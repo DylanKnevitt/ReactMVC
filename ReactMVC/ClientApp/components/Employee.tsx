@@ -14,7 +14,9 @@ class Employee extends React.Component<EmployeeProps, {}> {
     componentWillMount() {
         // This method runs when the component is first added to the page
         let id = this.props.match.params.id;
-        this.props.requestEmployeeAction(id);
+        if (id != 0) {
+            this.props.requestEmployeeAction(id);   
+        }
     }
 
     componentWillReceiveProps(nextProps: EmployeeProps) {
@@ -35,16 +37,24 @@ class Employee extends React.Component<EmployeeProps, {}> {
         this.props.history.push("/employees/1");
     }
     handleChange(e: any) {
-        var name = e.target.name;
-        var value = e.target.value;
-        
-        this.props.updateEmployeeStateAction(this.props.match.params.id,name,value);
+        let name = e.target.name;
+        let value = e.target.value;
+        let id = this.props.match.params.id;
+        this.props.updateEmployeeStateAction(id, name, value);
 
         e.preventDefault();
     }
     handleSubmit(event: any) {
         event.preventDefault();
-        var employee = this.props.employees[this.props.match.params.id - 1];
+        let index = this.props.match.params.id;
+        let employee: EmployeesState.Employee;
+
+        if (index != 0) {
+            employee = this.props.employees[index-1];
+        } else {
+            employee = this.props.newEmployee;
+        }
+     
         if (employee != undefined) {
             this.props.updateEmployeeAction(employee);
         }
@@ -86,7 +96,14 @@ class Employee extends React.Component<EmployeeProps, {}> {
 
     public render() {
         let form: any;
-        var employee = this.props.employees[this.props.match.params.id-1];
+        let index = this.props.match.params.id;
+        let employee: EmployeesState.Employee;
+        if (index != 0) {
+            employee = this.props.employees[index-1];
+        } else {
+            employee = this.props.newEmployee;
+        }
+
         if (employee != undefined && Object.keys(employee).length !== 0 && employee.constructor === Object) {
             form = this.getEmployeeForm(employee);
         } else {
@@ -105,8 +122,8 @@ class Employee extends React.Component<EmployeeProps, {}> {
     }
 }
 
-
-export default connect(
+import { withRouter } from 'react-router-dom';
+export default withRouter(connect(
     (state: ApplicationState) => state.employees, // Selects which state properties are merged into the component's props
     EmployeesState.actionCreators                 // Selects which action creators are merged into the component's props
-)(Employee) as typeof Employee;
+)(Employee) as typeof Employee);

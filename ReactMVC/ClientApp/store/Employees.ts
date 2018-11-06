@@ -8,10 +8,10 @@ export interface EmployeesState {
     isLoading: boolean;
     pageIndex?: number;
     employees: Employee[];
+    newEmployee: Employee;
 }
 
 export interface Employee {
-    [key:number]: any;
     id: number;
     firstName: string;
     lastName: string;
@@ -59,6 +59,7 @@ interface UpdateEmployeeAction {
 interface UpdateEmployeeStateAction {
     type: 'UPDATE_EMPLOYEE_STATE';
     employee: Employee;
+    newEmployee: Employee;
 }
 
 interface CancelEmployeeChangesAction {
@@ -96,7 +97,7 @@ export const actionCreators = {
     },
 
     updateEmployeeAction: (employee: Employee): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        if (employee.id == getState().employees.employees[employee.id-1].id) {
+
             let fetchTask = fetch(`api/v1/Employees`,
                 {
                     method: 'post',
@@ -106,17 +107,23 @@ export const actionCreators = {
                     },
                     body: JSON.stringify(employee)
                 })
-                .then(response => response.json() as Promise<Employee>)
+                .then(response => response.json() as Promise<number>)
                 .then(data => {
-                    dispatch({ type: 'REQUEST_EMPLOYEE', id: data.id });
+                    dispatch({ type: 'REQUEST_EMPLOYEE', id: data});
                 });
 
             addTask(fetchTask);
-            dispatch({ type: 'UPDATE_EMPLOYEE', employee: employee });
-        }
+        dispatch({ type: 'UPDATE_EMPLOYEE', employee: employee });
+
     },
     updateEmployeeStateAction: (id: number,name: string, value: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        var employeeFromState = getState().employees.employees[id-1];
+
+        let employeeFromState = getState().employees.newEmployee;
+
+        if (id != 0) {
+            employeeFromState = getState().employees.employees[id - 1];
+        }
+        
         if (employeeFromState != undefined) {
             var employee = Object.assign({}, employeeFromState);
 
@@ -168,7 +175,7 @@ export const actionCreators = {
                     break;
 
             }
-            dispatch({ type: 'UPDATE_EMPLOYEE_STATE', employee: employee });
+            dispatch({ type: 'UPDATE_EMPLOYEE_STATE', employee: employee,newEmployee : employee });
         }
 
     },
@@ -177,8 +184,26 @@ export const actionCreators = {
 }
 };
 
+const newEmployee: Employee = {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    complexDetails: "",
+    streetName: "",
+    suburb: "",
+    province: "",
+    country: "",
+    postalCode: "",
+    contactCountryCode: "",
+    contactNumber: "",
+    contactExtension: "",
+    emailAddress: "",
+    twitterHandle: "",
+    githubPage: ""
+};
 
-const unloadedState: EmployeesState = {employees: [] ,isLoading: false };
+const unloadedState: EmployeesState = {
+    employees: [], isLoading: false, newEmployee: newEmployee};
 
 export const reducer: Reducer<EmployeesState> = (state: EmployeesState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
@@ -187,43 +212,58 @@ export const reducer: Reducer<EmployeesState> = (state: EmployeesState, incoming
         return {
             pageIndex: action.pageIndex,
             employees: state.employees,
-            isLoading: true
+            isLoading: true,
+            newEmployee: state.newEmployee
         };
     case 'RECEIVE_EMPLOYEES':
         if (action.pageIndex === state.pageIndex) {
             return {
                 pageIndex: action.pageIndex,
                 employees: action.employees,
-                isLoading: false
+                isLoading: false,
+                newEmployee: state.newEmployee
             };
         }
         break;
     case 'REQUEST_EMPLOYEE':
         return {
             employees: state.employees,
-            isLoading: true
+            isLoading: true,
+            newEmployee: state.newEmployee
         };
     case 'RECEIVE_EMPLOYEE':
 
         if (action.employee === state.employees[action.employee.id - 1]) {
             return {
                 employees: state.employees,
-                isLoading: false
+                isLoading: false,
+                newEmployee: state.newEmployee
             };
         }
         break;
     case 'UPDATE_EMPLOYEE':
         return {
             employees: state.employees,
-            isLoading: false
+            isLoading: false,
+            newEmployee: state.newEmployee
         }
     case 'UPDATE_EMPLOYEE_STATE':
-
-        var employees = Object.assign({}, state.employees, {[action.employee.id-1]:action.employee});
-            return {
-                employees: employees,
-                isLoading: false
+        let id = action.employee.id;
+            if (id == 0) {
+                return {
+                    employees: state.employees,
+                    isLoading: false,
+                    newEmployee: action.newEmployee
+                }
+            } else {
+                var employees = Object.assign({}, state.employees, { [id - 1]: action.employee });
+                return {
+                    employees: employees,
+                    isLoading: false,
+                    newEmployee: state.newEmployee
+                }
             }
+
         case 'CANCEL_EMPLOYEE_CHANGES':
             return unloadedState;
         default:

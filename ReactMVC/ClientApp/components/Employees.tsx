@@ -34,6 +34,7 @@ class Employees extends React.Component<EmployeeProps, {}> {
 
     public render() {
         return <div>
+                   <Link className='btn btn-default' to={`/employee/0`}>AddEmployee</Link>
             <h1>Employees</h1>
             { this.renderEmployeeTable() }
             { this.renderPagination() }

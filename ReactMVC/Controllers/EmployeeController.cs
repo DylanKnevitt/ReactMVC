@@ -42,9 +42,15 @@ namespace ReactMVC.Controllers
         }
 
         [HttpPost("Employees")]
-        public ActionResult GetEmployees([FromBody] EmployeeViewModel employee)
+        public ActionResult AddOrUpdateEmployee([FromBody] EmployeeViewModel employee)
         {
             var mappedResult = Mapper.Map<EmployeeViewModel, Employee> (employee);
+            if (employee.Id == 0)
+            {
+                var result = EmployeeService.Add(mappedResult);
+                return Ok(result);
+            }
+
             EmployeeService.Update(mappedResult);
             return Ok();
         }
