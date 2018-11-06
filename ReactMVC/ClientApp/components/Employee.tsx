@@ -96,7 +96,7 @@ class Employee extends React.Component<EmployeeProps, {}> {
         return <div>
             <button onClick={this.cancelChanges}>Back</button>
             <h1>Employee</h1>
-            <form id="employeeForm" className="employeeForm" onSubmit={this.handleSubmit}>>
+            <form id="employeeForm" className="employeeForm" onSubmit={this.handleSubmit}>
                 {form}
             </form >
             
