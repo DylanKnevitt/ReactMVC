@@ -23,7 +23,6 @@ class Employees extends React.Component<EmployeeProps, {}> {
         let pageIndex = nextProps.match.params.pageIndex || 1;
         this.props.requestEmployeesAction(pageIndex);
     }
-
     constructor(props : any) {
         super(props);
         this.handleDoubleClickItem = this.handleDoubleClickItem.bind(this);
@@ -65,22 +64,22 @@ class Employees extends React.Component<EmployeeProps, {}> {
             </thead>
             <tbody>
             {this.props.employees.map(employee =>
-                    <tr id={String(employee.id)} onDoubleClick={this.handleDoubleClickItem} key={ employee.id }>
-                        <td>{employee.id}</td>
-                        <td>{employee.firstName}</td>
-                        <td>{employee.lastName}</td>
-                        <td>{employee.complexDetails}</td>
-                        <td>{employee.streetName}</td>
-                        <td>{employee.suburb}</td>
-                        <td>{employee.province}</td>
-                        <td>{employee.country}</td>
-                        <td>{employee.postalCode}</td>
-                        <td>{employee.contactCountryCode}</td>
-                        <td>{employee.contactNumber}</td>
-                        <td>{employee.contactExtension}</td>
-                        <td>{employee.emailAddress}</td>
-                        <td>{employee.twitterHandle}</td>
-                        <td>{employee.githubPage}</td>
+                <tr id={String(employee.id)} onDoubleClick={this.handleDoubleClickItem} key={ employee.id }>
+                    <td>{employee.id}</td>
+                    <td>{employee.firstName}</td>
+                    <td>{employee.lastName}</td>
+                    <td>{employee.complexDetails}</td>
+                    <td>{employee.streetName}</td>
+                    <td>{employee.suburb}</td>
+                    <td>{employee.province}</td>
+                    <td>{employee.country}</td>
+                    <td>{employee.postalCode}</td>
+                    <td>{employee.contactCountryCode}</td>
+                    <td>{employee.contactNumber}</td>
+                    <td>{employee.contactExtension}</td>
+                    <td>{employee.emailAddress}</td>
+                    <td>{employee.twitterHandle}</td>
+                    <td>{employee.githubPage}</td>
                 </tr>
             )}
             </tbody>
@@ -90,7 +89,7 @@ class Employees extends React.Component<EmployeeProps, {}> {
 
     private renderPagination() {
         let prevPageIndex = (this.props.pageIndex || 0);
-        let nextPageIndex = (this.props.pageIndex || 0);
+        let nextPageIndex = (this.props.pageIndex || 2);
         let prevPageIndexNum = 0;
         let nextPageIndexNum = 0;
 
@@ -118,7 +117,8 @@ class Employees extends React.Component<EmployeeProps, {}> {
     }
 }
 
-export default connect(
+import { withRouter } from 'react-router-dom';
+export default withRouter(connect(
     (state: ApplicationState) => state.employees, // Selects which state properties are merged into the component's props
     EmployeesState.actionCreators                 // Selects which action creators are merged into the component's props
-)(Employees) as typeof Employees;
+)(Employees) as typeof Employees);

@@ -1,14 +1,11 @@
 import * as Employees from './Employees';
-import * as Employee from './Employee';
 
 export interface ApplicationState {
-    employees: Employees.EmployeesState;
-    employee: Employee.EmployeeState;
+    employees: Employees.EmployeesState
 }
 
 export const reducers = {
-    employees: Employees.reducer,
-    employee: Employee.reducer
+    employees: Employees.reducer
 };
 
 export interface AppThunkAction<TAction> {

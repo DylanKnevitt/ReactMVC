@@ -2,19 +2,19 @@ import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState }  from '../store';
-import * as EmployeeState from '../store/Employee';
+import * as EmployeesState from '../store/Employees';
 
 // At runtime, Redux will merge together...
 type EmployeeProps =
-    EmployeeState.EmployeeState        // ... state we've requested from the Redux store
-    & typeof EmployeeState.actionCreators      // ... plus action creators we've requested
+    EmployeesState.EmployeesState        // ... state we've requested from the Redux store
+    & typeof EmployeesState.actionCreators      // ... plus action creators we've requested
     & RouteComponentProps<{ id: number}>; // ... plus incoming routing parameters
 
 class Employee extends React.Component<EmployeeProps, {}> {
     componentWillMount() {
         // This method runs when the component is first added to the page
-        let pageIndex = this.props.match.params.id;
-        this.props.requestEmployeeAction(pageIndex);
+        let id = this.props.match.params.id;
+        this.props.requestEmployeeAction(id);
     }
 
     componentWillReceiveProps(nextProps: EmployeeProps) {
@@ -26,20 +26,27 @@ class Employee extends React.Component<EmployeeProps, {}> {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.cancelChanges = this.cancelChanges.bind(this);
         
     }
 
+    cancelChanges(e: any) {
+        this.props.cancelEmployeeChangesAction();
+        this.props.history.push("/employees/1");
+    }
     handleChange(e: any) {
         var name = e.target.name;
         var value = e.target.value;
-    this.props.updateEmployeeStateAction(name,value);
+        
+        this.props.updateEmployeeStateAction(this.props.match.params.id,name,value);
 
         e.preventDefault();
     }
     handleSubmit(event: any) {
         event.preventDefault();
-        if (this.props.employee != undefined) {
-            this.props.updateEmployeeAction(this.props.employee);   
+        var employee = this.props.employees[this.props.match.params.id - 1];
+        if (employee != undefined) {
+            this.props.updateEmployeeAction(employee);
         }
     }
 
@@ -78,15 +85,16 @@ class Employee extends React.Component<EmployeeProps, {}> {
     }
 
     public render() {
-        let form : any;
-        if (this.props.employee != undefined && Object.keys(this.props.employee).length !== 0 && this.props.employee.constructor === Object) {
-            form = this.getEmployeeForm(this.props.employee);
+        let form: any;
+        var employee = this.props.employees[this.props.match.params.id-1];
+        if (employee != undefined && Object.keys(employee).length !== 0 && employee.constructor === Object) {
+            form = this.getEmployeeForm(employee);
         } else {
             form = <div>Cannot find employee</div>;
         }
 
         return <div>
-            <button onClick={this.props.history.goBack}>Back</button>
+            <button onClick={this.cancelChanges}>Back</button>
             <h1>Employee</h1>
             <form id="employeeForm" className="employeeForm" onSubmit={this.handleSubmit}>>
                 {form}
@@ -99,6 +107,6 @@ class Employee extends React.Component<EmployeeProps, {}> {
 
 
 export default connect(
-    (state: ApplicationState) => state.employee, // Selects which state properties are merged into the component's props
-    EmployeeState.actionCreators                 // Selects which action creators are merged into the component's props
+    (state: ApplicationState) => state.employees, // Selects which state properties are merged into the component's props
+    EmployeesState.actionCreators                 // Selects which action creators are merged into the component's props
 )(Employee) as typeof Employee;
