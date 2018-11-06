@@ -1,0 +1,8 @@
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.csproj.CoreCompileInputs.cache
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.AssemblyInfoInputs.cache
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.AssemblyInfo.cs
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\bin\Debug\netcoreapp2.0\Repositories.deps.json
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\bin\Debug\netcoreapp2.0\Repositories.dll
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\bin\Debug\netcoreapp2.0\Repositories.pdb
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.dll
+C:\Users\dylank\Documents\Visual Studio 2017\Projects\ReactMVC\Repositories\obj\Debug\netcoreapp2.0\Repositories.pdb
