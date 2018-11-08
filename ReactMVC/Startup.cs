@@ -64,8 +64,9 @@ namespace ReactMVC
             // Add application services
             container.Register<IEmployeeService, EmployeeService>(Lifestyle.Transient);
             container.Register<IEmployeeRepository, SqlEmployeeRepository>(Lifestyle.Transient);
+
             container.Register<IDbConnection>(() => 
-                new SqlConnection("Data Source=localhost;Initial Catalog=TestCompanyDb;Integrated Security=false;User Id=sa; password=sa;Persist Security Info=True"),Lifestyle.Transient);
+                new SqlConnection(Configuration.GetConnectionString("DefaultConnection")),Lifestyle.Transient);
 
             container.RegisterSingleton(() => GetMapper(container));
             // Allow Simple Injector to resolve services from ASP.NET Core.
